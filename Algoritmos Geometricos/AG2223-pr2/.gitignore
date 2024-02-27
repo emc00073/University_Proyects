@@ -50,7 +50,7 @@ clion/.idea/*
 # JetBrains
 *.json
 *.xml
-*.filters
+# *.filters
 clion/cmake-build-debug-visual-studio-x64/*
 clion/cmake-build-release-visual-studio-x64/*
 clion/cmake-build-release-mingw/*

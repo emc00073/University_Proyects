@@ -284,7 +284,6 @@
     <ClCompile Include="Rendering\DrawCircle.cpp" />
     <ClCompile Include="Rendering\DrawLine.cpp" />
     <ClCompile Include="Rendering\DrawMesh.cpp" />
-    <ClCompile Include="Rendering\DrawPlane.cpp" />
     <ClCompile Include="Rendering\DrawPoint.cpp" />
     <ClCompile Include="Rendering\DrawPointCloud.cpp" />
     <ClCompile Include="Rendering\DrawPolygon.cpp" />
@@ -374,7 +373,6 @@
     <ClInclude Include="Rendering\DrawCircle.h" />
     <ClInclude Include="Rendering\DrawLine.h" />
     <ClInclude Include="Rendering\DrawMesh.h" />
-    <ClInclude Include="Rendering\DrawPlane.h" />
     <ClInclude Include="Rendering\DrawPoint.h" />
     <ClInclude Include="Rendering\DrawPointCloud.h" />
     <ClInclude Include="Rendering\DrawPolygon.h" />

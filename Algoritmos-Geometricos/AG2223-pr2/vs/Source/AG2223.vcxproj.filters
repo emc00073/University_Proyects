@@ -261,6 +261,15 @@
     <ClCompile Include="Rendering\DrawAABB.cpp">
       <Filter>Archivos de origen\RenderAG</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\DrawLine3d.cpp">
+      <Filter>Archivos de origen\RenderAG</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\DrawRay3D.cpp">
+      <Filter>Archivos de origen\RenderAG</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\DrawPlane.cpp">
+      <Filter>Archivos de origen\RenderAG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Fonts\lato.hpp">
@@ -498,6 +507,15 @@
       <Filter>Archivos de encabezado\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\DrawAABB.h">
+      <Filter>Archivos de encabezado\RenderAG</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DrawLine3d.h">
+      <Filter>Archivos de encabezado\RenderAG</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DrawRay3D.h">
+      <Filter>Archivos de encabezado\RenderAG</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DrawPlane.h">
       <Filter>Archivos de encabezado\RenderAG</Filter>
     </ClInclude>
   </ItemGroup>

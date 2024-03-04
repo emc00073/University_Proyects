@@ -42,8 +42,8 @@ bool Vect3d::collinear(Vect3d & a, Vect3d & b)
 
 double Vect3d::distance(Vect3d & p)
 {
-    //XXXX
-    return 0; 
+    // Calcula la distancia entre dos puntos
+	return sqrt(pow(getX() - p.getX(), 2) + pow(getY() - p.getY(), 2) + pow(getZ() - p.getZ(), 2));
 }
 
 double Vect3d::dot(Vect3d & v)
@@ -93,6 +93,10 @@ bool Vect3d::operator==(const Vect3d & vector)
 bool Vect3d::operator!=(const Vect3d & vector)
 {
 	return !(this->operator==(vector));
+}
+
+Vect3d Vect3d::operator-(const Vect3d& vector) {
+	return Vect3d(getX() - vector._value[X], getY() - vector._value[Y], getZ() - vector._value[Z]);
 }
 
 std::ostream& operator<<(std::ostream& os, const Vect3d& vec)

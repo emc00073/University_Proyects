@@ -14,6 +14,7 @@
 
 void AlgGeom::SceneContent::buildScenario()
 {
+    /*
     vec3 minBoundaries = vec3(-3.0f, -.4, -3.0f), maxBoundaries = vec3(-minBoundaries);
 
     // Random segments
@@ -68,6 +69,91 @@ void AlgGeom::SceneContent::buildScenario()
     // AABB
     AABB aabb(Vect3d(-1.0f, -2.0f, -1.5f), Vect3d(2.0f, 3.0f, 1.0f));
     this->addNewModel((new DrawAABB(aabb))->overrideModelName());
+    */
+
+    int numPoints = 100;
+    vec3 minBoundaries = vec3(-3.0f, -.4, -3.0f), maxBoundaries = vec3(-minBoundaries);
+
+    if (false) {
+        // 2 Vect3d
+        Vect3d a(4.0f, -0.19939f, 3.0f), b(5.0f, 3.80061f, 5.0f);
+        Vect3d c(-0.93961f, 0.60697f, 5.0f), d(0.06039f, 1.60697f, 7.0f);
+
+        // 2 Line3d
+        Line3d* line1 = new Line3d(a, b);
+        Line3d* line2 = new Line3d(c, d);
+
+        // Mostrar las lineas
+        this->addNewModel((new DrawLine3d(*line1))->setLineColor(vec4(1.0f, .0f, .0f, 1.0f))->overrideModelName());
+        this->addNewModel((new DrawLine3d(*line2))->setLineColor(vec4(.0f, 1.0f, .0f, 1.0f))->overrideModelName());
+
+        // Distance between 2 lines
+        float distance = line1->distance(*line2);
+
+        std::cout << "Distance between 2 lines: " << distance << std::endl;
+
+        delete line1;
+        delete line2;
+    }
+
+    if (false) {
+        // 2 Vect3d
+        Vect3d a(4.0f, -0.19939f, 3.0f), b(5.0f, 3.80061f, 5.0f);
+        Vect3d p(-0.93961f, 0.60697f, 5.0f);
+
+        // 1 Line3d
+        Line3d* line = new Line3d(a, b);
+
+        // Mostrar la linea
+        this->addNewModel((new DrawLine3d(*line))->setLineColor(vec4(1.0f, .0f, .0f, 1.0f))->overrideModelName());
+        // Mostrar el punto
+        this->addNewModel((new DrawPoint(p))->setPointColor(vec4(1.0f, 1.0f, 1.0f, 1.0f))->setPointSize(3.0f)->overrideModelName());
+
+        // Line that contains the point normal to the first line
+        Line3d lineNormal = line->normalLine(p);
+
+        // Mostrar la linea
+        this->addNewModel((new DrawLine3d(lineNormal))->setLineColor(vec4(.0f, 1.0f, .0f, 1.0f))->overrideModelName());
+
+        delete line;
+    }
+
+    if (false) {
+        // Comprobar si dos lineas son paralelas o perpendiculares
+        Vect3d a(0.0f, 0.0f, 0.0f), b(1.0f, 0.0f, 0.0f);
+        Vect3d c(0.0f, 0.0f, 1.0f), d(1.0f, 0.0f, 1.0f);
+
+        // 2 Line3d
+        Line3d* line1 = new Line3d(a, b);
+        Line3d* line2 = new Line3d(c, d);
+
+        // Mostrar las lineas
+        this->addNewModel((new DrawLine3d(*line1))->setLineColor(vec4(1.0f, .0f, .0f, 1.0f))->overrideModelName());
+        this->addNewModel((new DrawLine3d(*line2))->setLineColor(vec4(.0f, 1.0f, .0f, 1.0f))->overrideModelName());
+
+        // Comprobar si son paralelas
+        bool areParallel = line1->classify(*line2) == Line3d::classifyLines::PARALLEL;
+
+        std::cout << "Are parallel: " << areParallel << std::endl;
+
+        // Comprobar si son perpendiculares
+        bool arePerpendicular = line1->classify(*line2) == Line3d::classifyLines::INTERSECT;
+
+        std::cout << "Are perpendicular: " << arePerpendicular << std::endl;
+    }
+
+    if (true) {
+        // Crear un plano con 3 Vect3d y dibujarlo
+        Vect3d a(0.0f, 0.0f, 0.0f), b(1.0f, 0.0f, 0.0f), c(0.0f, 1.0f, 0.0f);
+        Plane* plane = new Plane(a, b, c, true);
+
+        // Mostrar el plano
+        this->addNewModel((new DrawPlane(*plane))->setLineColor(vec4(1.0f, .0f, .0f, 1.0f))->overrideModelName());
+
+        delete plane;
+    }
+
+    //delete pointCloud;
 }
 
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)

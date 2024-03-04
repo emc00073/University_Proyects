@@ -128,5 +128,10 @@ public:
 	*	@brief Shows the plane values at the debug window.
 	*/
 	friend std::ostream& operator<<(std::ostream& os, const Plane& plane);
+
+	// Getters of the points
+	Vect3d getPointA() { return _a; }
+	Vect3d getPointB() { return _b; }
+	Vect3d getPointC() { return _c; }
 };
 

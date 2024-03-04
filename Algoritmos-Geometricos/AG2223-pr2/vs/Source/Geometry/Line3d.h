@@ -78,6 +78,15 @@ public:
 	Line3d normalLine(Vect3d& p);
 
 	/**
+	* @brief Comprueba si dos lineas son paralelas
+	*/
+	classifyLines classify(Line3d& line);
+
+	bool isParallel(Line3d& line);
+
+	bool isPerpendicular(Line3d& line);
+
+	/**
 	*	@brief Assignment operator.
 	*/
 	virtual Line3d& operator=(const Line3d& line);

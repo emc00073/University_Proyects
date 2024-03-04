@@ -24,4 +24,6 @@
 #include "DrawRay.h"
 #include "DrawSegment.h"
 #include "DrawTriangle.h"
-
+#include "DrawLine3d.h"
+#include "DrawRay3D.h"
+#include "DrawPlane.h"

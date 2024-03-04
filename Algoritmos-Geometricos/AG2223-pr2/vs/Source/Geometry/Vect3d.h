@@ -122,6 +122,9 @@ public:
 	*/
 	virtual bool operator!=(const Vect3d& vector);
 
+	
+	virtual Vect3d operator-(const Vect3d& vector);
+
 	/**
 	*	@brief Shows some information of the vector as debugging info.
 	*/

@@ -77,7 +77,7 @@ public:
 	/**
 	*	@brief Distance between the plane and the point.
 	*/
-	double distance(Vect3d& point);
+	double distance(Vect3d& point, Vect3d& q);
 
 	/**
 	*	@brief Returns A in AX + BY + CZ + D = 0.

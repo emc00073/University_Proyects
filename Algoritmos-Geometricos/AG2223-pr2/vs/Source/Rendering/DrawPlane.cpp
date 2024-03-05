@@ -3,35 +3,54 @@
 
 AlgGeom::DrawPlane::DrawPlane(Plane& plane) : Model3D(), _plane(plane) 
 {
-    // Calcular el punto de corte con el maximo y minimo de la pantalla
-    // Dimensiones de la pantalla
-    int MAX_T = 8000;
-
-    Vect3d pointA = _plane.getPointA();
-    Vect3d pointB = _plane.getPointB();
-    Vect3d pointC = _plane.getPointC();
-
-    Line3d lineAB(pointA, pointB);
-    Line3d lineBC(pointB, pointC);
-    Line3d lineCA(pointC, pointA);
-    Line3d lineBA(pointB, pointA);
-    Line3d lineCB(pointC, pointB);
-    Line3d lineAC(pointA, pointC);
-
     Component* component = new Component;
-    component->_vertices.insert(component->_vertices.end(), {
-        VAO::Vertex { vec3(lineAB.getPoint(MAX_T).getX(), lineAB.getPoint(MAX_T).getY(), lineAB.getPoint(MAX_T).getZ())},
-        VAO::Vertex { vec3(lineAC.getPoint(MAX_T).getX(), lineAC.getPoint(MAX_T).getY(), lineAC.getPoint(MAX_T).getZ())},
-        VAO::Vertex { vec3(lineBC.getPoint(MAX_T).getX(), lineBC.getPoint(MAX_T).getY(), lineBC.getPoint(MAX_T).getZ())},
-        VAO::Vertex { vec3(lineBA.getPoint(MAX_T).getX(), lineBA.getPoint(MAX_T).getY(), lineBA.getPoint(MAX_T).getZ())},
-        VAO::Vertex { vec3(lineCA.getPoint(MAX_T).getX(), lineCA.getPoint(MAX_T).getY(), lineCA.getPoint(MAX_T).getZ())},
-        VAO::Vertex { vec3(lineCB.getPoint(MAX_T).getX(), lineCB.getPoint(MAX_T).getY(), lineCB.getPoint(MAX_T).getZ())}
-        });
 
-    component->_indices[VAO::IBO_LINE].insert(component->_indices[VAO::IBO_LINE].end(), { 0, 1 });
+    Vect3d normal = plane.getNormal();
+
+    Vect3d a = plane.getPointA();
+    Vect3d b = plane.getPointB();
+    Vect3d c = plane.getPointC();
+
+    Vect3d ab = b.sub(a);
+    Vect3d ac = c.sub(a);
+    Vect3d bc = c.sub(b);
+    Vect3d ba = a.sub(b);
+    Vect3d ca = a.sub(c);
+    Vect3d cb = b.sub(c);
+
+    const float factor = 10000000;
+
+    auto vertex = [&normal](Vect3d v) {
+        return VAO::Vertex{ vec3 { v.getX(), v.getY(), v.getZ() }, vec3 { normal.getX(), normal.getY(), normal.getZ() }};
+    };
+
+    component->_vertices.insert(component->_vertices.end(), {
+        vertex(cb.scalarMul(factor)),
+        vertex(b),
+        vertex(ab.scalarMul(factor)),
+        vertex(ac.scalarMul(factor)),
+        vertex(c),
+        vertex(bc.scalarMul(factor)),
+        vertex(ba.scalarMul(factor)),
+        vertex(a),
+        vertex(ca.scalarMul(factor)),
+    });
+
+    component->_indices[VAO::IBO_TRIANGLE].insert(component->_indices[VAO::IBO_LINE].end(), {
+        0, 1, 2, RESTART_PRIMITIVE_INDEX,
+        2, 1, 3, RESTART_PRIMITIVE_INDEX,
+        3, 1, 4, RESTART_PRIMITIVE_INDEX,
+        3, 4, 5, RESTART_PRIMITIVE_INDEX,
+        5, 4, 6, RESTART_PRIMITIVE_INDEX,
+        6, 4, 7, RESTART_PRIMITIVE_INDEX,
+        6, 7, 8, RESTART_PRIMITIVE_INDEX,
+        8, 7, 0, RESTART_PRIMITIVE_INDEX,
+        7, 1, 0, RESTART_PRIMITIVE_INDEX,
+        1, 7, 4
+    });
+
     this->_components.push_back(std::unique_ptr<Component>(component));
 
-    component->completeTopology();
     this->buildVao(component);
 }
 

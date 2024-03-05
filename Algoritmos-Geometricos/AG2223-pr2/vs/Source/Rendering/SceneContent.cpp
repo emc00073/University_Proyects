@@ -74,7 +74,7 @@ void AlgGeom::SceneContent::buildScenario()
     int numPoints = 100;
     vec3 minBoundaries = vec3(-3.0f, -.4, -3.0f), maxBoundaries = vec3(-minBoundaries);
 
-    if (false) {
+    if (true) {
         // 2 Vect3d
         Vect3d a(4.0f, -0.19939f, 3.0f), b(5.0f, 3.80061f, 5.0f);
         Vect3d c(-0.93961f, 0.60697f, 5.0f), d(0.06039f, 1.60697f, 7.0f);
@@ -96,7 +96,7 @@ void AlgGeom::SceneContent::buildScenario()
         delete line2;
     }
 
-    if (false) {
+    if (true) {
         // 2 Vect3d
         Vect3d a(4.0f, -0.19939f, 3.0f), b(5.0f, 3.80061f, 5.0f);
         Vect3d p(-0.93961f, 0.60697f, 5.0f);
@@ -118,7 +118,7 @@ void AlgGeom::SceneContent::buildScenario()
         delete line;
     }
 
-    if (false) {
+    if (true) {
         // Comprobar si dos lineas son paralelas o perpendiculares
         Vect3d a(0.0f, 0.0f, 0.0f), b(1.0f, 0.0f, 0.0f);
         Vect3d c(0.0f, 0.0f, 1.0f), d(1.0f, 0.0f, 1.0f);
@@ -152,6 +152,8 @@ void AlgGeom::SceneContent::buildScenario()
 
         delete plane;
     }
+
+
 
     //delete pointCloud;
 }

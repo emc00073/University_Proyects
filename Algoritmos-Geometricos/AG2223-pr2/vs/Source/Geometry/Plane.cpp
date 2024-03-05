@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Plane.h"
 #include "BasicGeometry.h"
+#include "../Constantes.h"
 
 
 Plane::Plane(Vect3d & p, Vect3d & u, Vect3d & v, bool arePoints)
@@ -29,14 +30,23 @@ Plane::~Plane()
 
 bool Plane::coplanar(Vect3d & point)
 {  
-    //XXXX
+	Vect3d q = Vect3d();
+	if (distance(point, q) < EPSILON)
+	{
+		return true;
+	}
 	return false;
 }
 
-double Plane::distance(Vect3d & point)
+double Plane::distance(Vect3d & point, Vect3d& q)
 {
-	//XXXX  
-    return 0; 
+	Vect3d normal = getNormal();
+	float alfa = -(normal.dot(point) + getD()) / normal.dot(normal);
+
+	Vect3d normal_alfa = normal.scalarMul(alfa);
+	q = point.add(normal_alfa);
+
+	return normal_alfa.module();
 }    
 
 double Plane::getA()
@@ -56,8 +66,7 @@ double Plane::getC()
 
 Vect3d Plane::getNormal()
 {
-	//XXXX    
-    return Vect3d();
+	return Vect3d(getA(), getB(), getC());
 }
 
 bool Plane::intersect(Plane & plane, Line3d & line)
@@ -68,8 +77,19 @@ bool Plane::intersect(Plane & plane, Line3d & line)
 
 bool Plane::intersect(Line3d & line, Vect3d & point)
 {   
-    //XXXX
-    return true;
+	Vect3d normal = getNormal();
+	Vect3d origin = line.getOrigin();
+	Vect3d direction = line.getDestination();
+
+	if (normal.dot(direction) < EPSILON) {
+		return false;
+	}
+
+    float alfa = -(normal.dot(origin) + getD()) / (normal.dot(direction));
+
+	point = line.getPoint(alfa);
+	
+	return true;
 }
 
 bool Plane::intersect(Plane& pa, Plane& pb, Vect3d& pinter)

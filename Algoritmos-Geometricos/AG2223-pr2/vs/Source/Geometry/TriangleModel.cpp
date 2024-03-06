@@ -66,6 +66,33 @@ size_t TriangleModel::numTriangles()
     return _indices.size() / 3;
 }
 
+AABB TriangleModel::getAABB()
+{
+    double min_x, min_y, min_z, max_x, max_y, max_z;
+    if (_vertices.size() > 0)
+    {
+        min_x = max_x = _vertices[0].getX();
+        min_y = max_y = _vertices[0].getY();
+        min_z = max_z = _vertices[0].getZ();
+
+        for (auto& vertex : _vertices)
+        {
+            min_x = std::min(min_x, vertex.getX());
+            max_x = std::max(max_x, vertex.getX());
+            min_y = std::min(min_y, vertex.getY());
+            max_y = std::max(max_y, vertex.getY());
+            min_z = std::min(min_z, vertex.getZ());
+            max_z = std::max(max_z, vertex.getZ());
+		}
+
+        Vect3d min(min_x, min_y, min_z);
+        Vect3d max(max_x, max_y, max_z);
+
+		return AABB(min, max);
+	}
+    return AABB();
+}
+
  // Protected methods
 
 void TriangleModel::loadModelBinaryFile(const std::string& path)

@@ -2,6 +2,7 @@
 #include "BasicGeometry.h"
 #include "Triangle3d.h"
 #include "Edge3d.h"
+#include "../Constantes.h"
 
 
 Triangle3d::Triangle3d()
@@ -29,14 +30,39 @@ Triangle3d::~Triangle3d()
 
 double Triangle3d::area()
 {
-    //XXXX   
-    return 0;         
+    Vect3d AB = _b - _a;
+	Vect3d AC = _c - _a;
+	Vect3d cross = AB.xProduct(AC);
+
+	return cross.module() / 2;
 }
 
 Triangle3d::PointPosition Triangle3d::classify(Vect3d & point)
 {
-    //XXXX
-	return PointPosition::COPLANAR;
+	Vect3d v = point - _a;
+	Vect3d n = normal();
+	double len = v.module();
+
+	if (len < EPSILON)
+	{
+		return COPLANAR;
+	}
+
+	v = v.scalarMul(1.0f / len);
+	double d = v.dot(n);
+
+	if (d > EPSILON)
+	{
+		return POSITIVE;
+	}
+	else if (d < -EPSILON)
+	{
+		return NEGATIVE;
+	}
+	else
+	{
+		return COPLANAR;
+	}
 }
 
 Vect3d Triangle3d::normal()

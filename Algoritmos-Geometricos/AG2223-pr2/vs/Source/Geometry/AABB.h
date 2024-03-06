@@ -28,7 +28,8 @@
 class AABB
 {    
 protected:
-	Vect3d _min, _max;	
+	Vect3d _min; //menor x,y,z
+	Vect3d _max; //mayor x,y,z
 
 public:
 	/**

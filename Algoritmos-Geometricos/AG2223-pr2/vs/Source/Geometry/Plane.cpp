@@ -94,14 +94,19 @@ bool Plane::intersect(Line3d & line, Vect3d & point)
 
 bool Plane::intersect(Plane& pa, Plane& pb, Vect3d& pinter)
 {
-	//XXXX
-	return true;
-}
+	double DET = BasicGeometry::determinant3x3(getA(), getB(), getC(), pa.getA(), pa.getB(), pa.getC(), pb.getA(), pb.getB(), pb.getC());
+	if (abs(DET) < EPSILON)
+	{
+		return false;
+	}
 
-bool intersect(Plane& pa, Plane& pb, Vect3d& pinter)
-{
-	//XXXX
-    return true; 
+	double DETx = BasicGeometry::determinant3x3(getD(), getB(), getC(), pa.getD(), pa.getB(), pa.getC(), pb.getD(), pb.getB(), pb.getC());
+	double DETy = BasicGeometry::determinant3x3(getA(), getD(), getC(), pa.getA(), pa.getD(), pa.getC(), pb.getA(), pb.getD(), pb.getC());
+	double DETz = BasicGeometry::determinant3x3(getA(), getB(), getD(), pa.getA(), pa.getB(), pa.getD(), pb.getA(), pb.getB(), pb.getD());
+
+	pinter = Vect3d(-DETx / DET, -DETy / DET, -DETz / DET);
+
+	return true;
 }
 
 Plane & Plane::operator=(const Plane & plane)
@@ -114,6 +119,24 @@ Plane & Plane::operator=(const Plane & plane)
 	}
 
 	return *this;
+}
+
+Vect3d Plane::reflectedPoint(Vect3d& v)
+{
+	Vect3d normal = getNormal();
+	float alfa = -2.0f * (normal.dot(v) + getD()) / normal.dot(normal);
+
+	Vect3d normal_alfa = normal.scalarMul(alfa);
+
+	return v.add(normal_alfa);
+}
+
+Vect3d Plane::reflectedDirection(Vect3d& d)
+{
+	Vect3d n_normal = getNormal().normalize();
+	float d_dot_n = d.dot(n_normal);
+
+	return d - n_normal.scalarMul(2.0f * d_dot_n);
 }
 
 std::ostream& operator<<(std::ostream& os, const Plane& plane)

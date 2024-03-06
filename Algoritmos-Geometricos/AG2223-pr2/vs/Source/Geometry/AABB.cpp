@@ -21,8 +21,7 @@ AABB::~AABB()
 
 Vect3d AABB::getCenter()
 {
-    //XXXX
-	return Vect3d();
+	return Vect3d((_max.getX() - _min.getX()) / 2, (_max.getY() - _min.getY()) / 2, (_max.getZ() - _min.getZ()) / 2);
 }
 
 Vect3d AABB::getExtent()

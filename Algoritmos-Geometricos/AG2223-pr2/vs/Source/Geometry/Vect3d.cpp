@@ -141,3 +141,21 @@ Vect3d Vect3d::xProduct(Vect3d & b)
 {
 	return Vect3d(getY() * b.getZ() - getZ() * b.getY(), getZ() * b.getX() - getX() * b.getZ(), getX() * b.getY() - getY() * b.getX());
 }
+
+void Vect3d::getPlane(Vect3d& v, Vect3d& n, float d)
+{
+	float A = v.getX() - getX();
+	float B = v.getY() - getY();
+	float C = v.getZ() - getZ();
+
+	n = Vect3d(A, B, C);
+
+	d = 0.5 * ((v.getX() * v.getX() - getX() * getX()) + (v.getY() * v.getY() - getY() * getY()) + (v.getZ() * v.getZ() - getZ() * getZ()));
+}
+
+Vect3d Vect3d::normalize()
+{
+	double mod = module();
+
+	return Vect3d(getX() / mod, getY() / mod, getZ() / mod);
+}

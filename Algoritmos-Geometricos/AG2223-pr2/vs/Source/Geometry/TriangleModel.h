@@ -56,5 +56,6 @@ public:
     std::vector<Vect2d>* getTextureCoordinates() { return &_textCoordinates; }
     std::vector<unsigned>* getIndices() { return &_indices; }
     size_t numTriangles();
+    AABB getAABB();
 };
 

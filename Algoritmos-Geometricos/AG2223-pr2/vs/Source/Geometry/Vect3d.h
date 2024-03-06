@@ -169,5 +169,15 @@ public:
 	*	@brief Vectorial product.
 	*/
 	Vect3d xProduct(Vect3d& b);
+
+	/**
+	*	@brief Returns the plane equidistant to this vector and another one.
+	*/
+	void getPlane(Vect3d& v, Vect3d& n, float d);
+
+	/**
+	*	@brief Returns the normalized vector.
+	*/
+	Vect3d normalize();
 };
 

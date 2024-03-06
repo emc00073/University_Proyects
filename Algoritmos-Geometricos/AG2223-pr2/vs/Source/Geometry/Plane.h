@@ -133,5 +133,17 @@ public:
 	Vect3d getPointA() { return _a; }
 	Vect3d getPointB() { return _b; }
 	Vect3d getPointC() { return _c; }
+
+	/**
+	* @brief Returns the reflected point of a point in the plane.
+	*/
+	Vect3d reflectedPoint(Vect3d& v);
+
+	/**
+	* @brief Returns the reflected direction of a direction in the plane.
+	*/
+	Vect3d reflectedDirection(Vect3d& d);
+
+
 };
 

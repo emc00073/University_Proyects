@@ -9,10 +9,11 @@ public class Render_Bezier : MonoBehaviour
     public Transform sphere;
     public bool renderSphereLines = true;
 
-    public float V0 = 0.2f;
+    private float V0;
     public float Ta = 0.4f;
     public float Tda = 0.8f;
     public float d = 0.0f;
+    public float Tmax = 5.0f; // Tiempo de la animación en segundos
     
     
     // Add a button to start an animation to move the cube along the path
@@ -24,24 +25,34 @@ public class Render_Bezier : MonoBehaviour
     // Coroutine to move the cube along the path with fade in and fade out animation
     IEnumerator MoveCube()
     {
+        V0 = 2 / (1 + Tda - Ta);
+
         Time time = new Time();
+        float tiempo = 0;
         float t = 0;
 
-        while (d < 1)
-        {
-            t += Time.deltaTime;
+        while (d < 1 && t <= 1)
+        {   
+            tiempo += Time.deltaTime;
+            t = tiempo / Tmax;
 
             if (d < Ta) {
                 // Acceleration
                 d = V0 * (t * t) / (2.0f * Ta);
+                print("Aceleración: " + $"{d}");
             }else if(d < Tda) {
                 // Constant speed
                 d = (V0 * Ta / 2.0f) + (V0 * (t - Ta));
+                print("Velocidad constante: " + $"{d}");
             }
-            else {
+            else
+            {
                 // Deceleration
                 d = (V0 * Ta / 2.0f) + (V0 * (Tda - Ta)) + (V0 - ((V0 * (t - Tda)) / (1 - Tda)) / 2) * (t - Tda);
+                print("Desaceleración: " + $"{d}");
             }
+
+            print("\nTiempo: " + $"{t}" + ", Distancia: " + $"{d}");
 
             float x = Mathf.Pow(1 - d, 3) * point0.position.x +
                       3 * Mathf.Pow(1 - d, 2) * d * point1.position.x +

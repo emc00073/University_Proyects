@@ -790,10 +790,10 @@ MonoBehaviour:
   numPoints: 200
   sphere: {fileID: 94169027}
   renderSphereLines: 1
-  V0: 0.05
   Ta: 0.4
   Tda: 0.8
   d: 0
+  Tmax: 5
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,10 +1307,10 @@ MonoBehaviour:
   numPoints: 200
   sphere: {fileID: 916326555}
   renderSphereLines: 1
-  V0: 0.05
   Ta: 0.4
   Tda: 0.8
   d: 0
+  Tmax: 3
 --- !u!1 &1117656438
 GameObject:
   m_ObjectHideFlags: 0

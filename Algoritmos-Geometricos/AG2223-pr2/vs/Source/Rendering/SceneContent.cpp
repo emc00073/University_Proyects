@@ -71,10 +71,10 @@ void AlgGeom::SceneContent::buildScenario()
     this->addNewModel((new DrawAABB(aabb))->overrideModelName());
     */
 
-    int numPoints = 100;
+    int numPoints = 50;
     vec3 minBoundaries = vec3(-3.0f, -.4, -3.0f), maxBoundaries = vec3(-minBoundaries);
 
-    if (true) {
+    if (false) {
         // 2 Vect3d
         Vect3d a(4.0f, -0.19939f, 3.0f), b(5.0f, 3.80061f, 5.0f);
         Vect3d c(-0.93961f, 0.60697f, 5.0f), d(0.06039f, 1.60697f, 7.0f);
@@ -96,7 +96,7 @@ void AlgGeom::SceneContent::buildScenario()
         delete line2;
     }
 
-    if (true) {
+    if (false) {
         // 2 Vect3d
         Vect3d a(4.0f, -0.19939f, 3.0f), b(5.0f, 3.80061f, 5.0f);
         Vect3d p(-0.93961f, 0.60697f, 5.0f);
@@ -118,7 +118,7 @@ void AlgGeom::SceneContent::buildScenario()
         delete line;
     }
 
-    if (true) {
+    if (false) {
         // Comprobar si dos lineas son paralelas o perpendiculares
         Vect3d a(0.0f, 0.0f, 0.0f), b(1.0f, 0.0f, 0.0f);
         Vect3d c(0.0f, 0.0f, 1.0f), d(1.0f, 0.0f, 1.0f);
@@ -142,7 +142,7 @@ void AlgGeom::SceneContent::buildScenario()
         std::cout << "Are perpendicular: " << arePerpendicular << std::endl;
     }
 
-    if (true) {
+    if (false) {
         // Crear un plano con 3 Vect3d y dibujarlo
         Vect3d a(0.0f, 0.0f, 0.0f), b(1.0f, 0.0f, 0.0f), c(0.0f, 1.0f, 0.0f);
         Plane* plane = new Plane(a, b, c, true);
@@ -151,6 +151,82 @@ void AlgGeom::SceneContent::buildScenario()
         this->addNewModel((new DrawPlane(*plane))->setLineColor(vec4(1.0f, .0f, .0f, 1.0f))->overrideModelName());
 
         delete plane;
+    }
+
+
+    // Práctica 2a
+    /*
+        Construir una escena con:
+        1. Una nube de puntos aleatoria de tamaño 50. Fijar un color para que
+        todos los puntos de la nube tengan el mismo.
+        2. Usar puntos de la nube de forma aleatoria para crear una recta L1, un
+        rayo R1 y un segmento S1. Dibujar las cuatro primitivas.
+        3. Crear la recta L2 paralela a L1=P+t(Q-P) que pasa por el punto más
+        cercano a P de la nube (y que no coincida con Q).
+        4. Comprobar si L1 y L2 son paralelas.
+        5. Encontrar el punto V más distanciado a la recta L1 y crear S2 como el
+        segmento perpendicular a L1 en V. Comprobar que L1 y S2 son
+        perpendiculares.
+        6. Calcular las distancias entre L1 y L2.
+        7. Calcula y dibuja la caja AABB de la nube de puntos.
+        8. Obtener el plano P, correspondiente a la tapa superior de la caja y
+        pintarlo.
+    */
+    if (true) {
+        // 1. Una nube de puntos aleatoria de tamaño 50. Fijar un color para que
+		// todos los puntos de la nube tengan el mismo.
+		PointCloud3d* pointCloud = new PointCloud3d(numPoints, maxBoundaries.y * 6.0f);
+		this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(vec4(1.0f, .0f, .0f, 1.0f))->overrideModelName()->setPointSize(4.0f));
+        
+        // 2. Usar puntos de la nube de forma aleatoria para crear una recta L1, un
+        // rayo R1 y un segmento S1. Dibujar las cuatro primitivas.
+
+        Vect3d a = pointCloud->getPoint(RandomUtilities::getUniformRandom(0, numPoints - 1));
+        Vect3d b = pointCloud->getPoint(RandomUtilities::getUniformRandom(0, numPoints - 1));
+        Vect3d c = pointCloud->getPoint(RandomUtilities::getUniformRandom(0, numPoints - 1));
+        Vect3d d = pointCloud->getPoint(RandomUtilities::getUniformRandom(0, numPoints - 1));
+        Vect3d e = pointCloud->getPoint(RandomUtilities::getUniformRandom(0, numPoints - 1));
+        Vect3d f = pointCloud->getPoint(RandomUtilities::getUniformRandom(0, numPoints - 1));
+
+        Line3d* line1 = new Line3d(a, b);
+        Ray3d* ray1 = new Ray3d(c, d);
+        Segment3d* segment1 = new Segment3d(e, f);
+
+        this->addNewModel((new DrawLine3d(*line1))->setLineColor(vec4(1.0f, .0f, .0f, 1.0f))->overrideModelName());
+        this->addNewModel((new DrawRay3D(*ray1))->setLineColor(vec4(.0f, 1.0f, .0f, 1.0f))->overrideModelName());
+        this->addNewModel((new DrawSegment(*segment1))->setLineColor(vec4(.0f, .0f, 1.0f, 1.0f))->overrideModelName());
+
+        // 3. Crear la recta L2 paralela a L1=P+t(Q-P) que pasa por el punto más
+        // cercano a P de la nube (y que no coincida con Q).
+        Vect3d p = pointCloud->getPoint(RandomUtilities::getUniformRandom(0, numPoints - 1));
+        Vect3d q = pointCloud->getPoint(RandomUtilities::getUniformRandom(0, numPoints - 1));
+        Vect3d vector = q - p;
+        Vect3d point;
+        float distancia = 10000000000.0f;
+        for (int i = 0; i < numPoints; i++)
+        {
+			Vect3d checkPoint = pointCloud->getPoint(i);
+            if (checkPoint.distance(p) < distancia) {
+                distancia = checkPoint.distance(checkPoint);
+				point = checkPoint;
+            }
+		}
+
+        Line3d L1 = Line3d(p, q);
+        Vect3d point2 = point.add(vector);
+        Line3d L2 = Line3d(point, point2);
+
+        this->addNewModel((new DrawLine3d(L2))->setLineColor(vec4(1.0f, 1.0f, .0f, 1.0f))->overrideModelName());
+
+
+
+
+
+        delete line1;
+        delete ray1;
+        delete segment1;
+        delete pointCloud;
+
     }
 
 

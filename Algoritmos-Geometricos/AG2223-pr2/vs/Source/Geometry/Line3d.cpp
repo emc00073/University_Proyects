@@ -42,6 +42,12 @@ double Line3d::distance(Line3d & line)
 	// Calcula el area del paralelogramo formado por los vectores u y v
 	double area = u.xProduct(v).module();
 
+	if (area < EPSILON)
+	{
+		// Las líneas son paralelas
+		return distance(orig1);
+	}
+
 	return abs(vol / area);
 }
 

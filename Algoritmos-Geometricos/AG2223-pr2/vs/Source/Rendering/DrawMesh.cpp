@@ -3,6 +3,7 @@
 
 // Public methods
 
+/*
 AlgGeom::DrawMesh::DrawMesh(TriangleModel& triangleModel): Model3D()
 {
     std::vector<Vect3d>* vertices = triangleModel.getVertices(), * normals = triangleModel.getNormals();
@@ -31,6 +32,7 @@ AlgGeom::DrawMesh::DrawMesh(TriangleModel& triangleModel): Model3D()
     this->buildVao(component);
     this->_components.push_back(std::unique_ptr<Component>(component));
 }
+*/
 
 AlgGeom::DrawMesh::~DrawMesh()
 {
@@ -86,4 +88,47 @@ void AlgGeom::DrawMesh::processNode(aiNode* node, const aiScene* scene, const st
     {
         this->processNode(node->mChildren[i], scene, folder);
     }
+}
+
+
+AlgGeom::DrawMesh::DrawMesh(TriangleModel& triangleModel) : Model3D()
+{
+    std::vector<Vect3d>* vertices = triangleModel.getVertices();
+    std::vector<unsigned>* indices = triangleModel.getIndices();
+    const size_t numFaces = triangleModel.numTriangles();
+
+    Component* component = new Component;
+
+    // Agregar vértices
+    for (size_t vertexIdx = 0; vertexIdx < vertices->size(); ++vertexIdx)
+    {
+        VAO::Vertex vertex{ vec3(vertices->at(vertexIdx).getX(), vertices->at(vertexIdx).getY(), vertices->at(vertexIdx).getZ()) };
+        component->_vertices.push_back(vertex);
+    }
+
+    // Agregar líneas (aristas) en lugar de triángulos
+    for (size_t faceIdx = 0; faceIdx < numFaces; ++faceIdx)
+    {
+        // Obtener los índices de los vértices del triángulo
+        unsigned idx1 = indices->at(faceIdx * 3);
+        unsigned idx2 = indices->at(faceIdx * 3 + 1);
+        unsigned idx3 = indices->at(faceIdx * 3 + 2);
+
+        // Agregar las aristas del triángulo (líneas)
+        component->_indices[VAO::IBO_LINE].push_back(idx1);
+        component->_indices[VAO::IBO_LINE].push_back(idx2);
+        component->_indices[VAO::IBO_LINE].push_back(RESTART_PRIMITIVE_INDEX);
+
+        component->_indices[VAO::IBO_LINE].push_back(idx2);
+        component->_indices[VAO::IBO_LINE].push_back(idx3);
+        component->_indices[VAO::IBO_LINE].push_back(RESTART_PRIMITIVE_INDEX);
+
+        component->_indices[VAO::IBO_LINE].push_back(idx3);
+        component->_indices[VAO::IBO_LINE].push_back(idx1);
+        component->_indices[VAO::IBO_LINE].push_back(RESTART_PRIMITIVE_INDEX);
+    }
+
+    component->completeTopology();
+    this->buildVao(component);
+    this->_components.push_back(std::unique_ptr<Component>(component));
 }

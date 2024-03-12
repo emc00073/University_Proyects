@@ -75,17 +75,18 @@ bool Plane::intersect(Plane & plane, Line3d & line)
     return true;
 }
 
+
 bool Plane::intersect(Line3d & line, Vect3d & point)
 {   
 	Vect3d normal = getNormal();
 	Vect3d origin = line.getOrigin();
-	Vect3d direction = line.getDestination();
+	Vect3d v = line.getDestination() - line.getOrigin();
 
-	if (normal.dot(direction) < EPSILON) {
+	if (abs(normal.dot(v)) < EPSILON) {
 		return false;
 	}
 
-    float alfa = -(normal.dot(origin) + getD()) / (normal.dot(direction));
+    float alfa = -1 * (normal.dot(origin) + getD()) / (normal.dot(v));
 
 	point = line.getPoint(alfa);
 	
@@ -123,20 +124,25 @@ Plane & Plane::operator=(const Plane & plane)
 
 Vect3d Plane::reflectedPoint(Vect3d& v)
 {
-	Vect3d normal = getNormal();
-	float alfa = -2.0f * (normal.dot(v) + getD()) / normal.dot(normal);
+	Vect3d normal = getNormal().normalize();
 
-	Vect3d normal_alfa = normal.scalarMul(alfa);
+	float alfa = -2.0f * (normal.dot(v) + getD());
 
-	return v.add(normal_alfa);
+	Vect3d a = normal.scalarMul(alfa);
+
+	return v.add(a);
 }
 
 Vect3d Plane::reflectedDirection(Vect3d& d)
 {
-	Vect3d n_normal = getNormal().normalize();
-	float d_dot_n = d.dot(n_normal);
+	Vect3d reflex = reflectedPoint(d);
+	Vect3d p_inter;
+	Vect3d origin = Vect3d(0.0f, 0.0f, 0.0f);
+	Line3d line = Line3d(origin, d);
 
-	return d - n_normal.scalarMul(2.0f * d_dot_n);
+	intersect(line, p_inter);
+
+	return p_inter - reflex;
 }
 
 std::ostream& operator<<(std::ostream& os, const Plane& plane)

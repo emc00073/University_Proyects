@@ -337,7 +337,7 @@ void AlgGeom::SceneContent::buildScenario()
         // distancia al plano A. Obtener el punto V2 como el punto reflejado en
         // A de V1.
 
-        Vect3d v1 = Vect3d(-2.0f, 0.0f, 1.0f);
+        Vect3d v1 = Vect3d(-2.0f, 0.0f, -2.2f);
         Vect3d v__;
         this->addNewModel((new DrawPoint(v1))->setPointColor(vec4(1.0f, .0f, 1.0f, 1.0f))->setPointSize(3.0f)->overrideModelName());
 
@@ -368,7 +368,7 @@ void AlgGeom::SceneContent::buildScenario()
     if (true) {
         // 1. Crea un objeto TriangleModel a partir de cualquier .obj y mostrarlo
         // en modo alambre.
-        TriangleModel* triangleModel = new TriangleModel("Assets/Models/perro.obj");
+        TriangleModel* triangleModel = new TriangleModel("Assets/Models/Dog.obj");
         auto model = (new DrawMesh(*triangleModel))->setModelMatrix(glm::translate(mat4(1.0f), vec3(.0f, .0f, .8f)))->overrideModelName();
         this->addNewModel(model);
 

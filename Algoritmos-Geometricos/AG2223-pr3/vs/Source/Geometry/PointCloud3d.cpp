@@ -7,7 +7,7 @@ PointCloud3d::PointCloud3d(): _maxPoint(INFINITY, -INFINITY, -INFINITY), _minPoi
 {
 }
 
-PointCloud3d::PointCloud3d (std::vector<Vect3d>& pointCloud):_points(pointCloud), _maxPoint(INFINITY, -INFINITY, -INFINITY), _minPoint(INFINITY, INFINITY, INFINITY)
+PointCloud3d::PointCloud3d (std::vector<Vect3d>& pointCloud):_points(pointCloud), _maxPoint(-INFINITY, -INFINITY, -INFINITY), _minPoint(INFINITY, INFINITY, INFINITY)
 {
 }
 

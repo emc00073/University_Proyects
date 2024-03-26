@@ -8,7 +8,7 @@ AlgGeom::DrawRay3D::DrawRay3D(Ray3d& ray): Model3D(), _ray(ray)
 
     Component* component = new Component;
     component->_vertices.insert(component->_vertices.end(), {
-        VAO::Vertex { vec3(ray.getOrigin().getX(), ray.getOrigin().getY(), .0f)}
+        VAO::Vertex { vec3(ray.getOrigin().getX(), ray.getOrigin().getY(), ray.getOrigin().getZ())}
 ,       VAO::Vertex { vec3(ray.getPoint(MAX_X).getX(), ray.getPoint(MAX_X).getY(), ray.getPoint(MAX_X).getZ())},
         });
 

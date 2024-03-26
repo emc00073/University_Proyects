@@ -97,3 +97,44 @@ void Triangle3d::set(Vect3d & va, Vect3d & vb, Vect3d & vc)
 	_c = vc;
 }
 
+bool Triangle3d::ray_tri(Ray3d& ray, Vect3d& p)
+{
+	constexpr float epsilon = 1.0e-10f;
+
+	Vect3d ray_vector = ray.getDestination() - ray.getOrigin();
+
+	Vect3d edge1 = _b - _a;
+	Vect3d edge2 = _c - _a;
+
+	Vect3d ray_cross_e2 = ray_vector.xProduct(edge2);
+	float det = edge1.dot(ray_cross_e2);
+
+	if (det > -epsilon && det < epsilon)
+		return false;    // This ray is parallel to this triangle.
+
+	float inv_det = 1.0 / det;
+	Vect3d s = ray.getOrigin() - _a;
+	float u = inv_det * s.dot(ray_cross_e2);
+
+	if (u < 0 || u > 1)
+		return false;
+
+	Vect3d s_cross_e1 = s.xProduct(edge1);
+	float v = inv_det * ray_vector.dot(s_cross_e1);
+
+	if (v < 0 || u + v > 1)
+		return false;
+
+	// At this stage we can compute t to find out where the intersection point is on the line.
+	float t = inv_det * edge2.dot(s_cross_e1);
+
+	if (t > epsilon) // ray intersection
+	{
+		Vect3d ray_vector_t = ray_vector.scalarMul(t);
+		p = ray.getOrigin().add(ray_vector_t);
+		return true;
+	}
+	else // This means that there is a line intersection but not a ray intersection.
+		return false;
+}
+

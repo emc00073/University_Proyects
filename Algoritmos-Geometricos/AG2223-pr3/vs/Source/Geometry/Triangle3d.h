@@ -25,6 +25,7 @@
 #pragma once
 
 #include "Vect3d.h"
+#include <Ray3d.h>
 
 /**
 *	@brief This class represents a triangle defined by 3 points.
@@ -149,5 +150,12 @@ public:
 	*	@brief Modifies all the points.
 	*/
 	void set(Vect3d& va, Vect3d& vb, Vect3d& vc);	
+
+	/**
+	*	@brief Returns if a ray intersects the triangle.
+	*   @param ray The ray.
+	*   @param p The point of intersection.
+	*/
+	bool ray_tri(Ray3d& ray, Vect3d& p);
 };
 

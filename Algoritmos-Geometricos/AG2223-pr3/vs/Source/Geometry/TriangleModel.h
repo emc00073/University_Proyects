@@ -57,5 +57,9 @@ public:
     std::vector<unsigned>* getIndices() { return &_indices; }
     size_t numTriangles();
     AABB getAABB();
+
+    bool rayTraversalExh(Ray3d& r, Vect3d& p, Triangle3d& t);
+    bool rayTraversalExh(Ray3d& r, std::vector<Vect3d> &p, std::vector<Triangle3d> &t);
+    bool pointIntoMesh(Vect3d& v);
 };
 

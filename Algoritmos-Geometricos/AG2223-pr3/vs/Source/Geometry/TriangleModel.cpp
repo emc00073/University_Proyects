@@ -93,6 +93,85 @@ AABB TriangleModel::getAABB()
     return AABB();
 }
 
+bool TriangleModel::rayTraversalExh(Ray3d& r, Vect3d& p, Triangle3d& t)
+{
+    float distance = std::numeric_limits<float>::max();
+    bool intersected = false;
+    
+    for (int i = 0; i < this->numTriangles(); i++)
+    {   
+        Vect3d intersection;
+		Triangle3d triangle = this->getFace(i);
+        if (triangle.ray_tri(r, intersection))
+        {
+            intersected = true;
+            float d = r.getOrigin().distance(intersection);
+            if (d < distance)
+            {
+                distance = d;
+                t = triangle;
+                p = intersection;
+            }
+		}
+	}
+
+	return intersected;
+}
+
+bool TriangleModel::rayTraversalExh(Ray3d& r, std::vector<Vect3d> &p, std::vector<Triangle3d> &t)
+{
+    float distance = std::numeric_limits<float>::max();
+    bool intersected = false;
+
+    for (int i = 0; i < this->numTriangles(); i++)
+    {
+        Vect3d intersection;
+        Triangle3d triangle = this->getFace(i);
+        if (triangle.ray_tri(r, intersection))
+        {
+            intersected = true;
+
+            p.push_back(intersection);
+            t.push_back(triangle);
+        }
+    }
+
+    return intersected;
+}
+
+bool TriangleModel::pointIntoMesh(Vect3d& v)
+{
+    Vect3d rayDirection = Vect3d((float)(rand() % 2 - 1), (float)(rand() % 2 - 1), (float)(rand() % 2 - 1));
+    Vect3d rayDirection2 = Vect3d((float)(rand() % 2 - 1), (float)(rand() % 2 - 1), (float)(rand() % 2 - 1));
+    Vect3d rayDirection3 = Vect3d((float)(rand() % 2 - 1), (float)(rand() % 2 - 1), (float)(rand() % 2 - 1));
+
+    Ray3d ray(v, rayDirection);
+    Ray3d ray2(v, rayDirection2);
+    Ray3d ray3(v, rayDirection3);
+
+    std::vector<Vect3d> p, q, r;
+    std::vector<Triangle3d> t, u, w;
+
+    this->rayTraversalExh(ray, p, t);
+    this->rayTraversalExh(ray2, q, u);
+
+    if (p.size() % 2 == 0 && q.size() % 2 == 0) {
+        return false;
+    }else{
+        if (p.size() % 2 != 0 && q.size() % 2 != 0) {
+            return true;
+        }
+        else {
+            this->rayTraversalExh(ray3, r, w);
+            printf("Lanzado tercer rayo");
+            if (r.size() % 2 == 0)
+                return false;
+            else
+                return true;
+        }
+    }
+}
+
  // Protected methods
 
 void TriangleModel::loadModelBinaryFile(const std::string& path)
